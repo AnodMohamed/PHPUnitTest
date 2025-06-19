@@ -15,7 +15,7 @@ class GameTest extends TestCase
 
         foreach (range(1,20) as $roll)
         {
-            $game->roll(0);
+            $game->rolls(0);
         }
 
         $this->assertSame(0, $game->score());
@@ -31,7 +31,7 @@ class GameTest extends TestCase
 
         foreach (range(1,20) as $roll)
         {
-            $game->roll(1);
+            $game->rolls(1);
         }
 
         $this->assertSame(20, $game->score());
@@ -45,16 +45,16 @@ class GameTest extends TestCase
         {
         $game = new Game();
 
-        $game->roll(5);
+        $game->rolls(5);
 
-        $game->roll(5);
+        $game->rolls(5);
 
 
-        $game->roll(8);
+        $game->rolls(8);
 
         foreach (range(1,17) as $roll)
         {
-            $game->roll(0);
+            $game->rolls(0);
         }
 
         $this->assertSame(26, $game->score());
@@ -68,16 +68,16 @@ class GameTest extends TestCase
     {
         $game = new Game();
 
-        $game->roll(10); //strike
+        $game->rolls(10); //strike
 
-        $game->roll(5);
+        $game->rolls(5);
 
-        $game->roll(2);
+        $game->rolls(2);
 
 
         foreach (range(1,16) as $roll)
         {
-            $game->roll(0);
+            $game->rolls(0);
         }
 
         $this->assertSame(24, $game->score());
@@ -94,12 +94,12 @@ class GameTest extends TestCase
 
         foreach (range(1,18) as $roll)
         {
-            $game->roll(0);
+            $game->rolls(0);
         }
 
-        $game->roll(5);
-        $game->roll(5);
-        $game->roll(5);
+        $game->rolls(5);
+        $game->rolls(5);
+        $game->rolls(5);
 
         $this->assertSame(15, $game->score());
 
@@ -116,12 +116,12 @@ class GameTest extends TestCase
 
         foreach (range(1,18) as $roll)
         {
-            $game->roll(0);
+            $game->rolls(0);
         }
 
-        $game->roll(10);
-        $game->roll(10);
-        $game->roll(10);
+        $game->rolls(10);
+        $game->rolls(10);
+        $game->rolls(10);
 
         $this->assertSame(30, $game->score());
 
@@ -138,7 +138,7 @@ class GameTest extends TestCase
 
         foreach (range(1,12) as $roll)
         {
-            $game->roll(10);
+            $game->rolls(10);
         }
 
         $this->assertSame(300, $game->score());
