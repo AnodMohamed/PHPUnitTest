@@ -110,7 +110,7 @@ class StringCalculatorTest extends TestCase
     {
         $calculator = new StringCalculator();
 
-       $this->assertEquals(9, $calculator->add('//:\n5:4'));
+        $this->assertEquals(9, $calculator->add('//:\n5:4'));
 
 
     }
