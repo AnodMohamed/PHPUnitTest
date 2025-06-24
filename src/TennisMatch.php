@@ -15,7 +15,10 @@ class TennisMatch
             return 'Winner: '.$this->leader();
         }
 
-
+        if($this->isDeuce())
+        {
+            return 'Deuce';
+        }
 
         //otherwise provide a default
         return sprintf(
@@ -80,6 +83,17 @@ class TennisMatch
                 ? "Player 1" 
                 : "Player 2";
      }
+
+     /**
+     * 
+     * @return bool 
+     */
+    protected function isDeuce() : bool
+    {
+        $canBeWon = $this->playerOnePoints >= 3 && $this->playerTwoPoints >= 3;
+        return  $canBeWon && $this->playerOnePoints == $this->playerTwoPoints;
+
+    }
 }
 
 ?>
