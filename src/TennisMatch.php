@@ -1,122 +1,86 @@
-<?php
+<?php  
+namespace App;  
 
-namespace App;
-
-class TennisMatch  
-{
-    protected $playerOnePoints = 0;
-    protected $playerTwoPoints = 0;
-
-
-    public function score()
-    {
-        if($this->hasWinner() )
-        {
-            return 'Winner: '.$this->leader();
-        }
-
-        //check for advantage 
-
-        if($this->hasAdvantage())
-        {
-             return 'Advantage: '.$this->leader();
-        }
-        
-        if($this->isDeuce())
-        {
-            return 'Deuce';
-        }
-
-        //otherwise provide a default
-        return sprintf(
-            "%s-%s",
-            $this->pointsToTerm($this->playerOnePoints),
-            $this->pointsToTerm($this->playerTwoPoints),
-
-        );
-      
-    }
-
-    public function pointToPlayerOne()
-    {
-        $this->playerOnePoints++;
-    }
-
-    public function pointToPlayerTwo()
-    {
-        $this->playerTwoPoints++;
-    }
+class TennisMatch   
+{     
+    protected Player $playerOne;     
+    protected Player $playerTwo;      
     
-    protected function pointsToTerm($points)
-    {
-        switch($points){
-            case 0:
-                return 'Love';
-            case 1:
-                return 'Fifteen';
-            case 2:
-                return 'Thirty';
-            case 3:
-                return 'Forty';
-        }
-       
-    }
+    public function __construct($playerOne, $playerTwo)     
+    {         
+        $this->playerOne = $playerOne;         
+        $this->playerTwo = $playerTwo;      
+    }     
+    
+    public function score()     
+    {         
+        if($this->hasWinner())         
+        {             
+            return 'Winner: '.$this->leader()->name;         
+        }          
+        
+        // check for advantage           
+        if($this->hasAdvantage())         
+        {              
+            return 'Advantage: '.$this->leader()->name;         
+        }                  
+        
+        if($this->isDeuce())         
+        {             
+            return 'Deuce';         
+        }          
+        
+        // otherwise provide a default         
+        return sprintf(             
+            "%s-%s", 
+            $this->playerOne->toTerm(),
+            $this->playerTwo->toTerm(),
+        );            
+    }      
+
+    public function pointTo(Player $player)     
+    {         
+        $player->score();     
+    }     
+    
 
     
-    protected function hasWinner() : bool
-    {
-        if($this->playerOnePoints > 3 && $this->playerOnePoints >= $this->playerTwoPoints + 2)
+    protected function hasWinner() : bool     
+    {      
+        if(max([$this->playerOne->points, $this->playerTwo->points]) < 4)
         {
-            return true;
-        }
+            return false;
+        }   
+        return abs( $this->playerOne->points - $this->playerTwo->points);
+                       
+    }       
+    
+    protected function leader() : Player        
+    {         
+        return  $this->playerOne->points > $this->playerTwo->points                  
+            ? $this->playerOne                  
+            : $this->playerTwo;      
+    }      
+    
+    protected function isDeuce() : bool     
+    {         
+        return $this->canBeWon() && $this->playerOne->points == $this->playerTwo->points;      
+    }      
+    
+    protected function hasAdvantage()
+    {          
+        if($this->canBeWon())         
+        {             
+            return ! $this->isDeuce();         
+        }                  
         
-        if($this->playerTwoPoints > 3 && $this->playerTwoPoints >= $this->playerOnePoints + 2)
-        {
-            return true;
-        }
-
-        return false;
-
-    }
-
-    /**
-     * 
-     * @return string 
-     */
-
-     protected function leader() : string 
-     {
-        return  $this->playerOnePoints > $this->playerTwoPoints 
-                ? "Player 1" 
-                : "Player 2";
-     }
-
-     /**
-     * 
-     * @return bool 
-     */
-    protected function isDeuce() : bool
-    {
-        return $this->canBeWon() && $this->playerOnePoints == $this->playerTwoPoints;
-
-    }
-
-    protected function hasAdvantage(){
-
-        if($this->canBeWon())
-        {
-            return ! $this->isDeuce();
-        }
-        
-        return false;
-
-    }
-
-    protected function canBeWon(): bool
-    {
-        return $this->playerOnePoints >= 3 && $this->playerTwoPoints >= 3;
-
-    }
-}
+        return false;      
+    }      
+    
+    protected function canBeWon(): bool     
+    {         
+        return $this->playerOne->points >= 3 && $this->playerTwo->points >= 3;      
+    } 
+} 
 
 ?>
