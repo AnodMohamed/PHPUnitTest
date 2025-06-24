@@ -15,6 +15,13 @@ class TennisMatch
             return 'Winner: '.$this->leader();
         }
 
+        //check for advantage 
+
+        if($this->hasAdvantage())
+        {
+             return 'Advantage: '.$this->leader();
+        }
+        
         if($this->isDeuce())
         {
             return 'Deuce';
@@ -90,8 +97,24 @@ class TennisMatch
      */
     protected function isDeuce() : bool
     {
-        $canBeWon = $this->playerOnePoints >= 3 && $this->playerTwoPoints >= 3;
-        return  $canBeWon && $this->playerOnePoints == $this->playerTwoPoints;
+        return $this->canBeWon() && $this->playerOnePoints == $this->playerTwoPoints;
+
+    }
+
+    protected function hasAdvantage(){
+
+        if($this->canBeWon())
+        {
+            return ! $this->isDeuce();
+        }
+        
+        return false;
+
+    }
+
+    protected function canBeWon(): bool
+    {
+        return $this->playerOnePoints >= 3 && $this->playerTwoPoints >= 3;
 
     }
 }
